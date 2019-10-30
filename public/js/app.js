@@ -1972,6 +1972,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2001,15 +2006,13 @@ __webpack_require__.r(__webpack_exports__);
       _this.latest = response.data;
     });
   },
-  methods: {
+  computed: {
     bodyblockheight: function bodyblockheight() {
-      // console.log(this.pagesize);
       var size = 0;
 
       switch (this.pagesize) {
         case "A3":
           size = 419;
-          console.log(this.pagesize);
           break;
 
         case "A3 landscape":
@@ -2034,7 +2037,9 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log('new size =', size - 40);
       return size - 40;
-    },
+    }
+  },
+  methods: {
     cssPagedMedia: function () {
       var style = document.createElement('style');
       document.head.appendChild(style);
@@ -2045,7 +2050,6 @@ __webpack_require__.r(__webpack_exports__);
     changecss: function changecss() {
       var _this2 = this;
 
-      // console.log('changecss')
       this.cssPagedMedia.size = function (size) {
         _this2.cssPagedMedia('@page {size: ' + size + '}');
       };
@@ -43421,21 +43425,21 @@ var render = function() {
         _c("div", { staticClass: "row" }, [
           _c(
             "div",
-            { style: { padding: "15px", height: _vm.bodyblockheight + "mm" } },
+            {
+              staticClass: "sheet padding-10mm printonly",
+              style: { padding: "15px", height: _vm.bodyblockheight + "mm" },
+              attrs: { id: "section-to-print" }
+            },
             [
-              _c(
-                "div",
-                { staticClass: "img-show", attrs: { id: "section-to-print" } },
-                [
-                  _vm.ShowImage
-                    ? _c("img", { attrs: { src: "templates/images/logo.png" } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  !_vm.ShowImage
-                    ? _c("img", { attrs: { src: "/images/" + _vm.image } })
-                    : _vm._e()
-                ]
-              )
+              _c("div", { staticClass: "img-show" }, [
+                _vm.ShowImage
+                  ? _c("img", { attrs: { src: "templates/images/logo.png" } })
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.ShowImage
+                  ? _c("img", { attrs: { src: "/images/" + _vm.image } })
+                  : _vm._e()
+              ])
             ]
           ),
           _vm._v(" "),

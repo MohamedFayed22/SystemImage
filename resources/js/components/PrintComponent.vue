@@ -36,6 +36,9 @@
                             <button class="btn btn-primary mb-2  btn-block" type="button" disabled="disabled"  v-if="loading">Searching...</button>
                         </div>
                     </div>
+
+
+
                 <div class="row">
                     <div class="col-12 col-lg-8">
                 <select @change="changecss" class="form-control" v-model="pagesize">
@@ -50,9 +53,11 @@
                         <span>Selected: {{ pagesize }}</span><br />
                 </div>
                 </div>
+
+
                 <div class="row">
-                    <div  v-bind:style="{ padding: '15px', height: bodyblockheight + 'mm' }">
-                        <div class="img-show" id="section-to-print">
+                    <div class="sheet padding-10mm printonly" id="section-to-print" v-bind:style="{ padding: '15px', height: bodyblockheight + 'mm' }">
+                        <div class="img-show"  >
                             <img src="templates/images/logo.png"  v-if="ShowImage"/>
                             <img :src="'/images/'+image"  v-if="!ShowImage"/>
                         </div>
@@ -114,16 +119,13 @@
             });
         },
 
-        methods: {
+        computed:{
             bodyblockheight(){
-               // console.log(this.pagesize);
                 let size = 0;
                 switch (this.pagesize)
                 {
                     case "A3":
                         size = 419;
-                        console.log(this.pagesize);
-
                         break;
                     case "A3 landscape":
                         size = 296;
@@ -143,6 +145,10 @@
                 console.log('new size =',size-40)
                 return (size - 40 );
             },
+        },
+
+        methods: {
+
 
             cssPagedMedia: (function () {
                 var style = document.createElement('style');
@@ -152,7 +158,6 @@
                 };
             }()),
             changecss(){
-               // console.log('changecss')
                 this.cssPagedMedia.size = (size)=>{
                     this.cssPagedMedia('@page {size: ' + size + '}');
                 };
