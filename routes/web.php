@@ -15,10 +15,18 @@
 //    return view('welcome');
 //});
 
-
+//
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
 
-
 Route::post('/image/store', 'ImageController@store');
+Route::post('/search', 'ImageController@search');
+
+Route::post('/latest', 'ImageController@latestDoc');
+Route::post('/data-image', 'ImageController@getImage');
+
+
+
+
+
