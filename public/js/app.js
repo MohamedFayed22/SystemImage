@@ -1977,6 +1977,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1996,7 +2003,8 @@ __webpack_require__.r(__webpack_exports__);
       size: 200,
       code: true,
       ShowImage: true,
-      image: ''
+      image: [],
+      AllSelected: []
     };
   },
   created: function created() {
@@ -2057,28 +2065,38 @@ __webpack_require__.r(__webpack_exports__);
       this.cssPagedMedia.size(this.pagesize);
     },
     printpage: function printpage() {
-      //const prtHtml = document.getElementById('imagess').innerHTML;
-      //console.log(prtHtml);
-      // document.body.innerHTML = prtHtml;
-      window.print(); // prtHtml.print();
-      // document.body.innerHTML =''
-      // WinPrint.print()
+      window.print();
     },
     findImage: function findImage(id) {
       var _this3 = this;
 
+      var self = this;
       this.QrShow = false;
-      this.code = false;
-      this.ShowImage = false;
+      this.code = false; //this.ShowImage =false;
+
       axios.post('/data-image', {
         id: id
       }).then(function (response) {
-        // console.log(response.data.image_name)
         _this3.valueQr = response.data.Qr;
-        _this3.valueBarCode = response.data.barCode;
-        _this3.image = response.data.image_name;
+        _this3.valueBarCode = response.data.barCode; // let op = self.AllSelected.filter(data => data.id == response.data.id);
+        // if(op.length == 0){
+        //     this.AllSelected.push(response.data);
+        //    // this.image = this.AllSelected;
+        // }
       });
     },
+    // StImage:function(id){
+    //     let self = this;
+    //     this.ShowImage =false;
+    //         axios.post('/data-image',{id:id}).then((response) => {
+    //             let op = self.AllSelected.filter(data => data.id == response.data.id);
+    //             if(op.length == 0){
+    //                 this.AllSelected.push(response.data);
+    //                 console.log(this.AllSelected);
+    //                // this.image = this.AllSelected;
+    //             }
+    //     });
+    // },
     search: function search() {
       var _this4 = this;
 
@@ -43431,19 +43449,43 @@ var render = function() {
               attrs: { id: "section-to-print" }
             },
             [
-              _c("div", { staticClass: "img-show" }, [
-                _vm.ShowImage
-                  ? _c("img", { attrs: { src: "templates/images/logo.png" } })
-                  : _vm._e(),
-                _vm._v(" "),
-                !_vm.ShowImage
-                  ? _c("img", { attrs: { src: "/images/" + _vm.image } })
-                  : _vm._e()
-              ])
+              _c(
+                "div",
+                { staticClass: "img-show" },
+                [
+                  _vm.ShowImage
+                    ? _c("img", { attrs: { src: "templates/images/logo.png" } })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm._l(_vm.AllSelected, function(select) {
+                    return _c("div", { staticClass: "ex3" }, [
+                      !_vm.ShowImage
+                        ? _c("img", {
+                            attrs: { src: "/images/" + select.image_name }
+                          })
+                        : _vm._e()
+                    ])
+                  })
+                ],
+                2
+              )
             ]
           ),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "col-12 col-lg-10" }, [
+            _c("h2", [_vm._v("Image Name")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "block" },
+              _vm._l(_vm.AllSelected, function(select) {
+                return _c("ul", [
+                  _c("li", [_vm._v("  " + _vm._s(select.description))])
+                ])
+              }),
+              0
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-12 col-lg-2" }, [
             _c(
@@ -43522,16 +43564,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-lg-10" }, [
-      _c("h2", [_vm._v("Image Name")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImageRequest;
 use App\Image;
 use Illuminate\Http\Request;
 
@@ -9,35 +10,30 @@ class ImageController extends Controller
 {
 
     /**
-     * function store image uploaded
-     * @param Request $request
+     * function store image uploaded with QR and Barcode
+     * @param ImageRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(ImageRequest $request)
     {
-
-
-        $this->validate($request, [
-            'image' => 'required',
-            'description'=>'required'
-        ]);
-
-
         if ($request->image) {
             $image = $request->image;
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('images/') . $name);
         }
 
-        $image = new Image();
-        $image->image_name = $name;
-        $image->description = $request->description;
-        $image->Qr = mt_rand(1,1518488);
-        $image->barCode = rand(1111111111,9999999999);
-        $image->save();
+        $new_item = Image::create([
+            'image_name' => $name,
+            'description' => $request->description,
+            'Qr' => $name,
+            'barCode' => rand(1111111111, 9999999999),
+        ]);
 
-        return response()->json(['success' => 'You have successfully uploaded an image'], 200);
+        if($new_item){
+            return response()->json(['success' => 'You have successfully uploaded an image'], 200);
+        }
+        return response()->json(['error' => 'You have Error uploaded an image']);
+
     }
 
     /**
@@ -69,10 +65,15 @@ class ImageController extends Controller
         return $images;
     }
 
+    /**
+     * function get data image when send id param
+     * @param Request $request
+     * @return mixed
+     */
     public function getImage(Request $request)
     {
-       $image = Image::find($request->id);
-       return $image;
+        $image = Image::find($request->id);
+        return $image;
     }
 
 }
